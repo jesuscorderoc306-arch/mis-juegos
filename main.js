@@ -380,6 +380,24 @@ function checkUpdates() {
   setInterval(() => autoUpdater.checkForUpdates().catch(() => {}), 6 * 3600e3);
 }
 
+// Botón de Ajustes: buscar actualización ahora
+let updateReady = null;
+autoUpdater.on('update-downloaded', (info) => { updateReady = info.version; });
+ipcMain.handle('check-update', async () => {
+  if (!app.isPackaged) return { status: 'dev' };
+  if (updateReady) return { status: 'ready', version: updateReady };
+  try {
+    const r = await autoUpdater.checkForUpdates();
+    const v = r?.updateInfo?.version;
+    if (v && v !== app.getVersion()) return { status: 'downloading', version: v };
+    return { status: 'latest', version: app.getVersion() };
+  } catch {
+    return { status: 'error' };
+  }
+});
+ipcMain.handle('install-update', () => autoUpdater.quitAndInstall());
+ipcMain.handle('version', () => app.getVersion());
+
 app.on('second-instance', () => {
   if (!win) return;
   if (win.isMinimized()) win.restore();

@@ -31,6 +31,7 @@ const SETTINGS = [
   { key: 'startup', type: 'toggle', title: 'Abrir con Windows', desc: 'Se abre en pantalla completa al prender la PC, como una consola' },
   { key: 'fullscreen', type: 'toggle', title: 'Pantalla completa', desc: 'También puedes usar F11' },
   { key: 'add', type: 'action', title: 'Agregar juego', desc: 'Elige el .exe de un juego que no aparece solo' },
+  { key: 'update', type: 'action', title: 'Buscar actualización', desc: 'Revisa si hay una versión nueva de Mis Juegos' },
   { key: 'refresh', type: 'action', title: 'Buscar juegos nuevos', desc: 'Vuelve a revisar Steam, Epic, Xbox y tus juegos' },
 ];
 
@@ -686,6 +687,26 @@ async function runSetting(item) {
     if (item.key === 'startup') toast(value ? 'Se abrirá al prender la PC' : 'Ya no se abrirá al prender la PC');
   } else if (item.key === 'add') addGame();
   else if (item.key === 'refresh') refresh(true);
+  else if (item.key === 'update') checkUpdate();
+}
+
+/* ---------------- Actualizaciones ---------------- */
+
+async function checkUpdate() {
+  const row = document.querySelector('.set-row[data-key="update"] small');
+  if (row) row.textContent = 'Buscando…';
+  const r = await window.api.checkUpdate();
+  const v = await window.api.version();
+  const msg = {
+    latest: `Ya tienes la versión más nueva (${v})`,
+    downloading: `Descargando la versión ${r.version}…`,
+    ready: `Versión ${r.version} lista. Reiniciando para instalar…`,
+    dev: 'Solo funciona en la app instalada',
+    error: 'No se pudo revisar. Revisa tu internet',
+  }[r.status];
+  if (row) row.textContent = msg;
+  toast(msg);
+  if (r.status === 'ready') setTimeout(() => window.api.installUpdate(), 1500);
 }
 
 /* ---------------- Orden ---------------- */
@@ -979,7 +1000,11 @@ requestAnimationFrame(pollGamepad);
     if (g) { g.art = art; refreshArt(g); }
   });
   window.api.onChanged(() => refresh());
-  window.api.onUpdate((v) => toast(`Versión ${v} lista. Se instalará al cerrar la app.`));
+  window.api.onUpdate((v) => {
+    toast(`Versión ${v} lista. Se instalará al cerrar la app.`);
+    const row = document.querySelector('.set-row[data-key="update"] small');
+    if (row) row.textContent = `Versión ${v} lista. Toca para instalar ahora`;
+  });
   window.api.onFullscreen((on) => {
     state.settings.fullscreen = on;
     document.querySelector('.set-row[data-key="fullscreen"]')?.classList.toggle('on', on);

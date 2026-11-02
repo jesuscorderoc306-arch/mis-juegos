@@ -20,6 +20,9 @@ contextBridge.exposeInMainWorld('api', {
   collect: (id, name, on) => ipcRenderer.invoke('collect', id, name, on),
   onArt: on('art'),
   onUpdate: on('update'),
+  checkUpdate: () => ipcRenderer.invoke('check-update'),
+  installUpdate: () => ipcRenderer.invoke('install-update'),
+  version: () => ipcRenderer.invoke('version'),
   onChanged: on('changed'),
   onFullscreen: on('fullscreen'),
 });
