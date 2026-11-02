@@ -30,9 +30,9 @@ const SETTINGS = [
   { key: 'music', type: 'toggle', title: 'Música de fondo', desc: 'Música suave en el menú. Se pausa al abrir un juego' },
   { key: 'startup', type: 'toggle', title: 'Abrir con Windows', desc: 'Se abre en pantalla completa al prender la PC, como una consola' },
   { key: 'fullscreen', type: 'toggle', title: 'Pantalla completa', desc: 'También puedes usar F11' },
-  { key: 'add', type: 'action', title: 'Agregar juego', desc: 'Elige el .exe de un juego que no aparece solo' },
-  { key: 'update', type: 'action', title: 'Buscar actualización', desc: 'Revisa si hay una versión nueva de Mis Juegos' },
-  { key: 'refresh', type: 'action', title: 'Buscar juegos nuevos', desc: 'Vuelve a revisar Steam, Epic, Xbox y tus juegos' },
+  { key: 'add', type: 'action', go: 'Agregar', title: 'Agregar juego', desc: 'Elige el .exe de un juego que no aparece solo' },
+  { key: 'update', type: 'action', go: 'Buscar', title: 'Buscar actualización', desc: 'Revisa si hay una versión nueva de Mis Juegos' },
+  { key: 'refresh', type: 'action', go: 'Buscar', title: 'Buscar juegos nuevos', desc: 'Vuelve a revisar Steam, Epic, Xbox y tus juegos' },
 ];
 
 const state = {
@@ -299,7 +299,9 @@ function createSetting(item, si, ii) {
   const el = document.createElement('button');
   el.className = 'set-row';
   el.dataset.key = item.key;
-  el.innerHTML = `<span class="set-text"><b></b><small></small></span>${item.type === 'toggle' ? '<span class="switch"></span>' : '<span class="set-go">Abrir</span>'}`;
+  el.innerHTML = `<span class="set-text"><b></b><small></small></span>${item.type === 'toggle' ? '<span class="switch"></span>' : '<span class="set-go"></span>'}`;
+  const go = el.querySelector('.set-go');
+  if (go) go.textContent = item.go || 'Abrir';
   el.querySelector('b').textContent = item.title;
   el.querySelector('small').textContent = item.desc;
   el.classList.toggle('on', item.type === 'toggle' && !!state.settings[item.key]);
