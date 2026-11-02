@@ -1,0 +1,49 @@
+{
+  "name": "mis-juegos",
+  "productName": "Mis Juegos",
+  "version": "1.3.0",
+  "description": "Todos tus juegos instalados en un solo lugar",
+  "author": "Chuyo",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "icon": "electron scripts/make-icon.js",
+    "dist": "electron-builder --win"
+  },
+  "devDependencies": {
+    "electron": "^45.2.1",
+    "electron-builder": "^26.18.0"
+  },
+  "build": {
+    "appId": "com.chuyo.misjuegos",
+    "productName": "Mis Juegos",
+    "directories": {
+      "output": "dist"
+    },
+    "publish": [{ "provider": "github", "owner": "jesuscorderoc306-arch", "repo": "mis-juegos" }],
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**",
+      "renderer/**",
+      "build/icon.png"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico",
+      "signExecutable": false
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Mis Juegos",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico"
+    }
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.11"
+  }
+}

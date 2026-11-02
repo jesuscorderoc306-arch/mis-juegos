@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' file: data:; style-src 'self'; script-src 'self'">
+  <title>Mis Juegos</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="booting">
+  <!-- Pantalla de bienvenida -->
+  <div class="splash" id="splash">
+    <div class="splash-mark">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect class="t1" x="4" y="4" width="7" height="7" rx="1.6"/>
+        <rect class="t2" x="13" y="4" width="7" height="7" rx="1.6"/>
+        <rect class="t3" x="4" y="13" width="7" height="7" rx="1.6"/>
+        <path class="t4" d="M14.2 13.4v6.2l5.6-3.1z"/>
+      </svg>
+    </div>
+    <div class="splash-name">Mis Juegos</div>
+    <div class="splash-bar"><span></span></div>
+  </div>
+
+  <aside class="side" id="side">
+    <div class="side-brand">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <rect x="4" y="4" width="7" height="7" rx="1.6"/>
+          <rect x="13" y="4" width="7" height="7" rx="1.6"/>
+          <rect x="4" y="13" width="7" height="7" rx="1.6"/>
+          <path d="M14.2 13.4v6.2l5.6-3.1z"/>
+        </svg>
+      </span>
+      <span class="side-name">Mis Juegos</span>
+    </div>
+    <nav class="side-nav" id="sideNav">
+      <span class="side-pill" id="sidePill"></span>
+    </nav>
+    <div class="side-foot">
+      <button class="side-act" id="addGame">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        <span>Agregar juego</span>
+      </button>
+      <div class="side-count">
+        <span id="sideCount"></span>
+        <button class="refresh" id="refresh" title="Buscar juegos nuevos" aria-label="Buscar juegos nuevos">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v5h-5"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <header class="topbar">
+    <label class="search">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <input id="q" placeholder="Buscar en tus juegos" spellcheck="false" autocomplete="off">
+    </label>
+  </header>
+
+  <div class="stage">
+    <section class="hero" id="hero">
+      <div class="hero-media">
+        <img id="heroA" alt="">
+        <img id="heroB" alt="">
+      </div>
+      <div class="hero-content" id="heroContent">
+        <img id="logo" class="logo" alt="">
+        <h1 id="title" class="title"></h1>
+        <div class="meta" id="meta"></div>
+        <div class="hero-actions">
+          <button id="play" class="play">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
+            <span>JUGAR</span>
+          </button>
+          <button id="infoBtn" class="fav-btn" aria-label="Ver ficha" title="Ver ficha (tecla I)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
+          </button>
+          <button id="favBtn" class="fav-btn" aria-label="Guardar" title="Guardar">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3.5h11a1 1 0 0 1 1 1V21l-6.5-5-6.5 5V4.5a1 1 0 0 1 1-1z"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <main id="scroller">
+      <div id="content"></div>
+      <div id="empty" class="empty" hidden></div>
+    </main>
+  </div>
+
+  <!-- Renombrar -->
+  <div class="modal" id="modal" hidden>
+    <form class="modal-box" id="renameForm">
+      <h3>Renombrar juego</h3>
+      <input id="renameInput" maxlength="80" spellcheck="false" autocomplete="off">
+      <div class="modal-actions">
+        <button type="button" class="btn-ghost" id="renameCancel">Cancelar</button>
+        <button type="submit" class="btn-solid">Guardar</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Ficha del juego -->
+  <div class="modal" id="infoModal" hidden>
+    <div class="modal-box info-box" id="info" role="dialog" aria-modal="true">
+      <h3></h3>
+      <dl class="info-list"></dl>
+      <div class="modal-actions">
+        <button type="button" class="btn-ghost danger" id="infoUninstall">Desinstalar</button>
+        <button type="button" class="btn-ghost" id="infoFolder">Abrir carpeta</button>
+        <button type="button" class="btn-ghost" id="infoClose">Cerrar</button>
+        <button type="button" class="btn-solid" id="infoPlay">Jugar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="sounds.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
